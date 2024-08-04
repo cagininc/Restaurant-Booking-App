@@ -1,5 +1,6 @@
 import Image from "next/image";
-import NavBar from "./components/NavBar";
+import NavBar from "../components/NavBar";
+import UserList from "../components/UserList";
 export default function Home() {
   return (
     <div>
@@ -8,7 +9,7 @@ export default function Home() {
       <p>
         Enjoy a seamless dining experience with our easy-to-use booking system.
       </p>
-
+<UserList />
       <Image
         src="/restaurant-image.jpg"
         alt="Restaurant Image"
