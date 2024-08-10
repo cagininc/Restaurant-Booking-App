@@ -1,21 +1,27 @@
 import Image from "next/image";
 import NavBar from "../components/NavBar";
 import UserList from "../components/UserList";
+import SingleUser from "../components/SingleUser";
+import Main from "../components/Main.js";
+import Footer from "../components/Footer.js";
+import BookingForm from "../components/BookingForm";
+import Script from 'next/script';
+import 'bootstrap/dist/css/bootstrap.min.css'; // Bootstrap CSS
+
 export default function Home() {
   return (
     <div>
-      <NavBar />
-      <h1>Welcome to my Restaurant Booking App..</h1>
-      <p>
-        Enjoy a seamless dining experience with our easy-to-use booking system.
-      </p>
-<UserList />
-      <Image
-        src="/restaurant-image.jpg"
-        alt="Restaurant Image"
-        width={500}
-        height={300}
+<Script
+        src="https://raw.githubusercontent.com/courseraap/capstone/main/api.js"
+        strategy="beforeInteractive"
       />
+      <NavBar />
+      
+<BookingForm/>
+
+
+
+      
     </div>
   );
 }
