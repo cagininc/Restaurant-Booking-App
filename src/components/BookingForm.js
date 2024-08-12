@@ -3,15 +3,18 @@ import React from 'react';
 
 const BookingForm = ({formData,handleChange,handleSubmit,availableTimes}) => {
   return (
+    
     <form onSubmit={handleSubmit}>
+      <label htmlFor="name"><h1>Book Now</h1></label>
       <div className="form-group">
         <label htmlFor="name">Name</label>
-        <input
+        <input placeholder='Your name'
           type="text"
           id="name"
           name="name"
           className="form-control"
-          onChange={handleChange}
+          onChange={(e) =>handleChange("name", e.target.value)}
+          value={formData.name}
         />
       </div>
       <div className="form-group">
@@ -21,7 +24,8 @@ const BookingForm = ({formData,handleChange,handleSubmit,availableTimes}) => {
           id="date"
           name="date"
           className="form-control"
-          onChange={handleChange}
+          onChange={(e)=>handleChange("date",e.target.value)}
+          value={formData.date}
         />
       </div>
       <div className="form-group">
@@ -29,29 +33,37 @@ const BookingForm = ({formData,handleChange,handleSubmit,availableTimes}) => {
         <select
           id="time"
           className="form-control"
-          onChange={handleChange}
+          onChange={(e)=>handleChange("time",e.target.value)}
+          value= {formData.time}
         >
-          <option value="">Select time</option>
-          {/* Available times will be dynamically added here */}
+          <option value="15:00">15:00</option>
+          <option value="16:00">16:00</option>
+          <option value="17:00">17:00</option>
+          <option value="18:00">18:00</option>
+          <option value="19:00">19:00</option>
+          <option value="20:00">20:00</option>
+          <option value="21:00">21:00</option>
         </select>
       </div>
       <div className="form-group">
         <label htmlFor="guests">Guests</label>
-        <input
+        <input placeholder='Number of guests'
           type="number"
           id="guests"
           name="guests"
           className="form-control"
-          onChange={handleChange}
+          onChange={(e)=>handleChange("guests",e.target.value)}
+          value={formData.guests}
         />
       </div>
       <div className="form-group">
         <label htmlFor="occasion">Occasion</label>
-        <select
+        <select 
           id="occasion"
           name="occasion"
           className="form-control"
-          onChange={handleChange}
+          onChange={(e)=>handleChange("occasion",e.target.value)}
+          value={formData.occasion}
         >
           <option value="" disabled>Select Occasion</option>
           <option value="Birthday">Birthday</option>

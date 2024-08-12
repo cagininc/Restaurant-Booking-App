@@ -1,31 +1,10 @@
-"use client"
+"use client";
 import React, { useState, useReducer, useEffect } from 'react';
 import BookingForm from './BookingForm';
 
-// Function to fetch available times from the API
-async function fetchAPI(date) {
-  const response = await fetch(`http://localhost:3001/api/availableTimes?date=${date}`);
-  const data = await response.json();
-  return data.times;
-}
-
-// Function to submit the booking form data to the API
-async function submitAPI(formData) {
-  const response = await fetch('http://localhost:3001/api/submit', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify(formData),
-  });
-
-  const result = await response.json();
-  return result.success;
-}
-
-// Initial state for the available times
+// Function to initialize available times
 function initializeTimes() {
-  return []; // Start with an empty array; data will come from the API
+  return [];
 }
 
 // Reducer function for managing available times state
@@ -38,9 +17,8 @@ function timesReducer(state, action) {
   }
 }
 
-
 function Main() {
-  console.log("hello")
+  
   const [formData, setFormData] = useState({
     name: "",
     date: '',
@@ -48,18 +26,68 @@ function Main() {
     guests: '',
     occasion: '',
   });
+  const [submittedData, setSubmittedData] = useState(null);
 
   const [availableTimes, dispatch] = useReducer(timesReducer, [], initializeTimes);
+  const submitAPI = async (formData) => {
+    try {
+      // Sunucuya POST isteği gönder
+      const response = await fetch('http://localhost:3001/api/submit', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData), // Form verilerini JSON formatında gönder
+      });
+  
+      // Yanıtı kontrol et
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+  
+      // Yanıtı JSON formatında al
+      const result = await response.json();
+      
+      // Sunucu yanıtında success alanını kontrol et
+      return result.success;
+    } catch (error) {
+      console.error('Error in submitAPI:', error);
+      throw error; // Hatanın catch bloğuna düşmesini sağlamak için tekrar fırlat
+    }
+  };
+  
+  const fetchAPI = async (date) => {
+    try {
+      // Tarihi 'YYYY-MM-DD' formatında bir string olarak almamız gerekiyor
+      const formattedDate = new Date(date).toISOString().split('T')[0]; 
+  
+      const response = await fetch(`http://localhost:3002/api/availableTimes?date=${formattedDate}`);
+  
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+  
+      const data = await response.json();
+      return data.times || [];
+    } catch (error) {
+      console.error('Error fetching available times:', error);
+      return [];
+    }
+  };
+  
 
-  useEffect(() => {
+useEffect(() => {
     if (formData.date) {
-      fetchAPI(formData.date).then(times => {
-        dispatch({ type: 'UPDATE_TIMES', payload: times });
-      }).catch(error => console.error('Error fetching available times:', error));
+      fetchAPI(formData.date)
+        .then(times => {
+          dispatch({ type: 'UPDATE_TIMES', payload: times });
+        })
+        .catch(error => console.error('Error fetching available times:', error));
     }
   }, [formData.date]);
 
   const handleChange = (id, value) => {
+    
     setFormData(prevFormData => ({
       ...prevFormData,
       [id]: value,
@@ -68,13 +96,12 @@ function Main() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log('Form Data:', formData);
-
+    setSubmittedData(formData);
     try {
       const success = await submitAPI(formData);
       if (success) {
         alert(`Reservation made for ${formData.guests} guests on ${formData.date} at ${formData.time} for ${formData.occasion}`);
-      } else {
+      } else { setSubmittedData(formData);
         alert('Failed to submit the reservation. Please try again.');
       }
     } catch (error) {
@@ -91,16 +118,19 @@ function Main() {
         handleSubmit={handleSubmit}
         availableTimes={availableTimes}
       />
-   
-   <div>
+      <div>
         <h2>Form Data:</h2>
+        {submittedData?(
         <ul>
-          {Object.entries(formData).map(([key, value], index) => (
+          {Object.entries(submittedData).map(([key, value], index) => (
             <li key={index}>
               <strong>{key}:</strong> {value}
             </li>
           ))}
         </ul>
+        ):(
+        <p>No data submitted yet.</p>
+        )}
       </div>
     </div>
   );
