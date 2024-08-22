@@ -20,7 +20,7 @@ function timesReducer(state, action) {
 function Main() {
   
   const [formData, setFormData] = useState({
-    name: "",
+    name: '',
     date: '',
     time: '',
     guests: '',
@@ -32,7 +32,7 @@ function Main() {
   const submitAPI = async (formData) => {
     try {
       // Sunucuya POST isteği gönder
-      const response = await fetch('http://localhost:3001/api/submit', {
+      const response = await fetch('http://localhost:3002/api/submit', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -111,14 +111,15 @@ useEffect(() => {
   };
 
   return (
-    <div>
+    <div id="main-form">
       <BookingForm
+      
         formData={formData}
         handleChange={handleChange}
         handleSubmit={handleSubmit}
         availableTimes={availableTimes}
       />
-      <div>
+      {/* <div data-theme="Lemonade">
         <h2>Form Data:</h2>
         {submittedData?(
         <ul>
@@ -131,7 +132,7 @@ useEffect(() => {
         ):(
         <p>No data submitted yet.</p>
         )}
-      </div>
+      </div> */}
     </div>
   );
 }

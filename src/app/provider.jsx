@@ -1,9 +1,5 @@
-// app/providers.tsx
-'use client'
-import 'bootstrap/dist/css/bootstrap.min.css';
+'use client';
 
-import  ChakraProvider  from '@chakra-ui/react'
-
-export function Providers({ children }: { children: React.ReactNode }) {
-  return <ChakraProvider>{children}</ChakraProvider>
+export function Providers({ children }) {
+  return <>{children}</>;
 }

@@ -1,15 +1,16 @@
 import Image from "next/image";
 import NavBar from "../components/NavBar";
-import UserList from "../components/UserList";
-import SingleUser from "../components/SingleUser";
 import Main from "../components/Main.js";
 import Footer from "../components/Footer.js";
 import BookingForm from "../components/BookingForm";
 import Script from 'next/script';
-import 'bootstrap/dist/css/bootstrap.min.css'; // Bootstrap CSS
+import Specials from "../components/Specials.js";
+import Testimonials from "../components/Testimonials.js";
 import  Hero  from "../components/Hero.js";
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-export default function Home() {
+
+
+export default 
+function Home() {
 
 
 
@@ -24,7 +25,16 @@ export default function Home() {
       /> */}
       <NavBar />
       <Hero/>
+      <Specials/>
+      <Testimonials/>
+      
       <Main/>
+      
+      <Footer/>
+      
+      
+     
+      
 
 
 
